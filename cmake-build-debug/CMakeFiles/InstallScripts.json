@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"E:/graphicsproject/cmake-build-debug/cmake_install.cmake",
+		"E:/graphicsproject/cmake-build-debug/_deps/freeglut-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

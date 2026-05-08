@@ -1,0 +1,6 @@
+"E:\Program Files\CLion 2025.3.2\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=E:/Program Files/CLion 2025.3.2/bin/ninja/win/x64/ninja.exe" -G Ninja -S E:\graphicsproject -B E:\graphicsproject\cmake-build-debug
+-- Found OpenGL: opengl32  found components: OpenGL
+-- Found OpenGL: opengl32
+-- Configuring done (3.3s)
+-- Generating done (0.3s)
+-- Build files have been written to: E:/graphicsproject/cmake-build-debug

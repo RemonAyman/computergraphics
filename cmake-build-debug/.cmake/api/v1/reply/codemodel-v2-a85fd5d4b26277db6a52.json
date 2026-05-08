@@ -1,0 +1,293 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "_deps/freeglut-build",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-_deps.freeglut-build-Debug-0afd51ce82484eb56ff6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "cmake-build-debug/_deps/freeglut-src",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "GraphicsAlgorithms",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "freeglut",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "3dview::@9b5b85394de702dc6831",
+					"jsonFile" : "target-3dview-Debug-50a94cd64dd0d34c0b95.json",
+					"name" : "3dview",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "CallbackMaker::@9b5b85394de702dc6831",
+					"jsonFile" : "target-CallbackMaker-Debug-b64ed287473ec65ebd2d.json",
+					"name" : "CallbackMaker",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Fractals::@9b5b85394de702dc6831",
+					"jsonFile" : "target-Fractals-Debug-23a65e4be3c7d742f84d.json",
+					"name" : "Fractals",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Fractals_random::@9b5b85394de702dc6831",
+					"jsonFile" : "target-Fractals_random-Debug-9b8f8ac0df0fb8621ee3.json",
+					"name" : "Fractals_random",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "GraphicsAlgorithms::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-GraphicsAlgorithms-Debug-77731ce615f224d56b1b.json",
+					"name" : "GraphicsAlgorithms",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Lorenz::@9b5b85394de702dc6831",
+					"jsonFile" : "target-Lorenz-Debug-004ba7eeefd97899a2f8.json",
+					"name" : "Lorenz",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "One::@9b5b85394de702dc6831",
+					"jsonFile" : "target-One-Debug-794ac02a46394aa114a4.json",
+					"name" : "One",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "accum::@9b5b85394de702dc6831",
+					"jsonFile" : "target-accum-Debug-79eda746add451313d59.json",
+					"name" : "accum",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "fonts::@9b5b85394de702dc6831",
+					"jsonFile" : "target-fonts-Debug-f761e606b4fcf4b59567.json",
+					"name" : "fonts",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "freeglut::@9b5b85394de702dc6831",
+					"jsonFile" : "target-freeglut-Debug-e40b593ade6901b5cc05.json",
+					"name" : "freeglut",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "indexed_color::@9b5b85394de702dc6831",
+					"jsonFile" : "target-indexed_color-Debug-2f15d3051dd9c502cd5f.json",
+					"name" : "indexed_color",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "joystick::@9b5b85394de702dc6831",
+					"jsonFile" : "target-joystick-Debug-fcea11f6d30fe83471dd.json",
+					"name" : "joystick",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "keyboard::@9b5b85394de702dc6831",
+					"jsonFile" : "target-keyboard-Debug-28c13f06c495820db639.json",
+					"name" : "keyboard",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "multi-touch::@9b5b85394de702dc6831",
+					"jsonFile" : "target-multi-touch-Debug-fbc2a30b43c9480459b1.json",
+					"name" : "multi-touch",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "resizer::@9b5b85394de702dc6831",
+					"jsonFile" : "target-resizer-Debug-18c656ccd12537369aa9.json",
+					"name" : "resizer",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "shapes::@9b5b85394de702dc6831",
+					"jsonFile" : "target-shapes-Debug-076608cc847d0456f8ca.json",
+					"name" : "shapes",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "smooth_opengl3::@9b5b85394de702dc6831",
+					"jsonFile" : "target-smooth_opengl3-Debug-73c428a492cccec8b972.json",
+					"name" : "smooth_opengl3",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "spaceball::@9b5b85394de702dc6831",
+					"jsonFile" : "target-spaceball-Debug-148a9551061634214bcc.json",
+					"name" : "spaceball",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "subwin::@9b5b85394de702dc6831",
+					"jsonFile" : "target-subwin-Debug-a12f585f7a9af67d596d.json",
+					"name" : "subwin",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "timer::@9b5b85394de702dc6831",
+					"jsonFile" : "target-timer-Debug-f5717ee0f4fd5de4b8a9.json",
+					"name" : "timer",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "timer_callback::@9b5b85394de702dc6831",
+					"jsonFile" : "target-timer_callback-Debug-98a23937a319dfd9d7df.json",
+					"name" : "timer_callback",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "vsync::@9b5b85394de702dc6831",
+					"jsonFile" : "target-vsync-Debug-67f4ef230b0c81d51494.json",
+					"name" : "vsync",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "windows::@9b5b85394de702dc6831",
+					"jsonFile" : "target-windows-Debug-042aaa4e7bc7835f3e18.json",
+					"name" : "windows",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/graphicsproject/cmake-build-debug",
+		"source" : "E:/graphicsproject"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 8
+	}
+}
