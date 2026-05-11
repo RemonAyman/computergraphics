@@ -23,7 +23,6 @@ public:
   static void mouseCallback(int button, int state, int x, int y);
   static void passiveMouseCallback(int x, int y);
   static void timerCallback(int value);
-  static void menuCallback(int id);
 
 private:
   App();
@@ -32,6 +31,8 @@ private:
   void renderUI();
   void renderSidebar();
   void renderStatusBar();
+  void renderCharts();
+  void renderEquations();
   void drawText(int x, int y, std::string text,
                 void *font = GLUT_BITMAP_HELVETICA_12);
 
@@ -41,9 +42,14 @@ private:
   bool isDrawing;
   bool isSplitScreen;
   bool isAnimating;
+  bool isTransitioning;
+  bool showCharts;
+  bool showEquations;
+  
   float animAngle;
   float animScale;
-  bool scaleUp;
+  Point animPivot;
+  int animFramesLeft;
 
   std::vector<Point> inputPoints;
   std::vector<std::unique_ptr<Shape>> shapes;
@@ -53,9 +59,7 @@ private:
 
   // UI Helpers
   void initButtons();
-  void initMenus();
   void handleButtonClick(Button &btn);
-  void createDemoShape();
 
   // Features
   void undo();
