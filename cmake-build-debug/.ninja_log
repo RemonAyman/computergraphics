@@ -15,7 +15,7 @@
 35	1757	7999862039871225	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/fg_font_data.c.obj	dd5ff8e46272f41e
 1570	3081	7999862055220235	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/fg_gl2.c.obj	e7d3bd0437ba2e4b
 5944	7721	7999862098965390	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/mswin/fg_ext_mswin.c.obj	39104f79ef9aa331
-17327	17759	7999862212799537	GraphicsAlgorithms.exe	c1aaf57f4c742978
+2950	3348	7999866598075227	GraphicsAlgorithms.exe	c1aaf57f4c742978
 1642	3158	7999862055950341	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/fg_input_devices.c.obj	6f1c7e6ae8c4a22c
 1757	3313	7999862057102568	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/fg_joystick.c.obj	8372655255583ed1
 1553	3354	7999862055052940	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/fg_geometry.c.obj	fa867781cfcb6207
@@ -37,7 +37,7 @@
 7681	10130	7999862116331562	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/mswin/fg_main_mswin.c.obj	1c9cc7734433104a
 8001	10323	7999862119538140	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/mswin/fg_spaceball_mswin.c.obj	1c1386b76e7d64b9
 8010	10351	7999862119632338	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/mswin/fg_state_mswin.c.obj	2b47da8becf0b43b
-10374	12203	7999862143266600	CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj	44bc2b8dd14868a3
+28	881	7999866568857873	CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj	44bc2b8dd14868a3
 10131	10373	7999862140836379	_deps/freeglut-build/CMakeFiles/freeglut.dir/__/__/freeglut.rc.obj	13d5f345fb692e2
 10323	10562	7999862142756450	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/util/xparsegeometry_repl.c.obj	354a37691aad4aac
 9852	12491	7999862138046984	_deps/freeglut-build/CMakeFiles/freeglut.dir/src/mswin/fg_window_mswin.c.obj	66f6288dd72cbbe6
@@ -47,9 +47,8 @@
 14291	15751	7999862195033908	_deps/freeglut-build/bin/libfreeglut.dll	e0491b3e5ae62828
 14291	15751	7999862195033908	_deps/freeglut-build/lib/libfreeglut.dll.a	e0491b3e5ae62828
 10562	15768	7999862145151763	CMakeFiles/GraphicsAlgorithms.dir/src/DrawingAlgorithms.cpp.obj	75f7494e5c38de20
-10352	16721	7999862143043441	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	dbd49048a4c1fdb7
-12501	17327	7999862164539149	CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj	f9c2d693ec696e61
-28	881	7999866568857873	CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj	44bc2b8dd14868a3
-33	2290	7999866568899345	CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj	f9c2d693ec696e61
-22	2950	7999866568800427	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	dbd49048a4c1fdb7
-2950	3348	7999866598075227	GraphicsAlgorithms.exe	c1aaf57f4c742978
+15	3555	8002341684476376	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	dbd49048a4c1fdb7
+25	2634	8002341684573987	CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj	f9c2d693ec696e61
+14	2054	8002342158629330	CMakeFiles/GraphicsAlgorithms.dir/src/Shape.cpp.obj	dee464bafbe579a3
+19	2551	8002342158689676	CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj	de9566abb4323b8e
+2552	3273	8002342184026697	GraphicsAlgorithms.exe	36c9ef137ec7702d

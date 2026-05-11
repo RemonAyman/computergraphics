@@ -1,6 +1,8 @@
 #include "App.h"
 #include "DrawingAlgorithms.h"
 #include "Clipping.h"
+#include "Curves.h"
+#include "Storage.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -29,7 +31,8 @@ void App::initButtons() {
 
     buttons.push_back({"Undo (Z)", 10, y, 110, btnH, AppMode::NONE});
     buttons.push_back({"Redo (Y)", 130, y, 110, btnH, AppMode::NONE}); y += btnH + spacing;
-    buttons.push_back({"Save Scene", 10, y, 230, btnH, AppMode::NONE});
+    buttons.push_back({"Save Scene", 10, y, 110, btnH, AppMode::NONE});
+    buttons.push_back({"Load Scene", 130, y, 110, btnH, AppMode::NONE});
 }
 
 void App::initMenus() {
@@ -105,6 +108,15 @@ void App::render() {
         glVertex2i(inputPoints[0].x, inputPoints[0].y);
         glVertex2i(mousePos.x, mousePos.y);
         glEnd();
+        
+        // Show control points for bezier during selection
+        if (currentMode == AppMode::CURVE_BEZIER) {
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glPointSize(5.0f);
+            glBegin(GL_POINTS);
+            for (const auto& p : inputPoints) glVertex2i(p.x, p.y);
+            glEnd();
+        }
     }
 
     renderUI();
@@ -170,9 +182,12 @@ void App::handleButtonClick(Button& btn) {
     else if (btn.label == "Split Compare") toggleSplitScreen();
     else if (btn.label == "Animate (R)") toggleAnimation();
     else if (btn.label == "Save Scene") saveScene();
+    else if (btn.label == "Load Scene") loadScene();
     else {
         currentMode = btn.mode;
-        createDemoShape();
+        inputPoints.clear();
+        isDrawing = false;
+        if (currentMode != AppMode::NONE) createDemoShape();
     }
 }
 
@@ -192,7 +207,7 @@ void App::menuCallback(int id) {
         case 2: app.currentMode = AppMode::DRAW_BRESENHAM; break;
         case 4: app.toggleAnimation(); break;
         case 5: app.toggleSplitScreen(); break;
-        case 6: app.shapes.clear(); break;
+        case 6: app.shapes.clear(); app.activeClipWindow = nullptr; break;
         case 7: exit(0);
     }
     glutPostRedisplay();
@@ -209,6 +224,7 @@ void App::reshapeCallback(int w, int h) {
     glMatrixMode(GL_PROJECTION); glLoadIdentity();
     gluOrtho2D(0, w, h, 0);
 }
+
 void App::mouseCallback(int button, int state, int x, int y) {
     App& app = getInstance();
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
@@ -216,26 +232,60 @@ void App::mouseCallback(int button, int state, int x, int y) {
             for (auto& btn : app.buttons) if (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h) app.handleButtonClick(btn);
         } else {
             if (app.currentMode != AppMode::NONE) {
-                if (!app.isDrawing) { app.inputPoints.clear(); app.inputPoints.push_back({x, y}); app.isDrawing = true; }
-                else {
-                    if (app.currentMode == AppMode::DRAW_DDA || app.currentMode == AppMode::DRAW_BRESENHAM)
-                        app.shapes.push_back(std::make_unique<LineShape>(app.inputPoints[0], Point(x, y), APP_COLOR_WHITE, (app.currentMode == AppMode::DRAW_DDA ? "DDA" : "Bresenham")));
-                    else if (app.currentMode == AppMode::DRAW_CIRCLE_MIDPOINT || app.currentMode == AppMode::DRAW_CIRCLE_BRESENHAM)
-                        app.shapes.push_back(std::make_unique<CircleShape>(app.inputPoints[0], (int)std::sqrt(std::pow(x-app.inputPoints[0].x,2)+std::pow(y-app.inputPoints[0].y,2)), APP_COLOR_WHITE, (app.currentMode == AppMode::DRAW_CIRCLE_MIDPOINT ? "Midpoint" : "Bresenham")));
-                    app.isDrawing = false;
+                if (app.currentMode == AppMode::CURVE_BEZIER) {
+                    app.inputPoints.push_back({x, y});
+                    if (app.inputPoints.size() == 4) {
+                        app.shapes.push_back(std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_WHITE));
+                        app.inputPoints.clear();
+                        app.isDrawing = false;
+                    } else { app.isDrawing = true; }
+                } else if (app.currentMode == AppMode::CLIPPING_LINE) {
+                    if (!app.isDrawing) { app.inputPoints.clear(); app.inputPoints.push_back({x, y}); app.isDrawing = true; }
+                    else {
+                        auto rect = std::make_unique<ClippingRect>(app.inputPoints[0], Point(x, y), APP_COLOR_GREEN);
+                        app.activeClipWindow = rect.get();
+                        app.shapes.push_back(std::move(rect));
+                        app.performClipping();
+                        app.isDrawing = false;
+                        app.currentMode = AppMode::NONE;
+                    }
+                } else {
+                    if (!app.isDrawing) { app.inputPoints.clear(); app.inputPoints.push_back({x, y}); app.isDrawing = true; }
+                    else {
+                        if (app.currentMode == AppMode::DRAW_DDA || app.currentMode == AppMode::DRAW_BRESENHAM)
+                            app.shapes.push_back(std::make_unique<LineShape>(app.inputPoints[0], Point(x, y), APP_COLOR_WHITE, (app.currentMode == AppMode::DRAW_DDA ? "DDA" : "Bresenham")));
+                        else if (app.currentMode == AppMode::DRAW_CIRCLE_MIDPOINT || app.currentMode == AppMode::DRAW_CIRCLE_BRESENHAM)
+                            app.shapes.push_back(std::make_unique<CircleShape>(app.inputPoints[0], (int)std::sqrt(std::pow(x-app.inputPoints[0].x,2)+std::pow(y-app.inputPoints[0].y,2)), APP_COLOR_WHITE, (app.currentMode == AppMode::DRAW_CIRCLE_MIDPOINT ? "Midpoint" : "Bresenham")));
+                        app.isDrawing = false;
+                    }
                 }
             }
         }
     }
     glutPostRedisplay();
 }
+
 void App::passiveMouseCallback(int x, int y) {
     App& app = getInstance(); app.mousePos = {x, y};
     for (auto& btn : app.buttons) btn.isHovered = (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h);
     glutPostRedisplay();
 }
-void App::undo() { if (!shapes.empty()) { redoStack.push_back(std::move(shapes.back())); shapes.pop_back(); } }
-void App::redo() { if (!redoStack.empty()) { shapes.push_back(std::move(redoStack.back())); redoStack.pop_back(); } }
+
+void App::undo() { 
+    if (!shapes.empty()) { 
+        if (shapes.back().get() == activeClipWindow) activeClipWindow = nullptr;
+        redoStack.push_back(std::move(shapes.back())); 
+        shapes.pop_back(); 
+    } 
+}
+void App::redo() { 
+    if (!redoStack.empty()) { 
+        if (redoStack.back()->getType() == Shape::Type::CLIP_RECT) activeClipWindow = static_cast<ClippingRect*>(redoStack.back().get());
+        shapes.push_back(std::move(redoStack.back())); 
+        redoStack.pop_back(); 
+    } 
+}
+
 void App::keyboardCallback(unsigned char key, int x, int y) {
     App& app = getInstance();
     if (key == 'z' || key == 'Z') app.undo();
@@ -244,8 +294,31 @@ void App::keyboardCallback(unsigned char key, int x, int y) {
     if (key == 27) exit(0);
     glutPostRedisplay();
 }
+
 void App::saveScene() {
-    std::ofstream file("scene.txt");
-    for (auto& s : shapes) file << (int)s->getType() << " " << s->getColor().r << " " << s->getColor().g << " " << s->getColor().b << "\n";
-    file.close();
+    Storage::save("scene.txt", shapes);
+}
+
+void App::loadScene() {
+    Storage::load("scene.txt", shapes);
+    activeClipWindow = nullptr;
+    for (auto& s : shapes) if (s->getType() == Shape::Type::CLIP_RECT) activeClipWindow = static_cast<ClippingRect*>(s.get());
+}
+
+void App::performClipping() {
+    if (!activeClipWindow) return;
+    int xmin = activeClipWindow->pMin.x, ymin = activeClipWindow->pMin.y;
+    int xmax = activeClipWindow->pMax.x, ymax = activeClipWindow->pMax.y;
+
+    for (auto& shape : shapes) {
+        if (shape->getType() == Shape::Type::LINE) {
+            LineShape* line = static_cast<LineShape*>(shape.get());
+            int x1 = line->p1.x, y1 = line->p1.y, x2 = line->p2.x, y2 = line->p2.y;
+            if (Clipping::cohenSutherlandClip(x1, y1, x2, y2, xmin, ymin, xmax, ymax)) {
+                line->p1 = {x1, y1}; line->p2 = {x2, y2};
+            } else {
+                line->p1 = line->p2 = {-100, -100}; 
+            }
+        }
+    }
 }

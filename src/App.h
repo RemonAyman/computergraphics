@@ -48,6 +48,7 @@ private:
     std::vector<std::unique_ptr<Shape>> shapes;
     std::vector<std::unique_ptr<Shape>> redoStack;
     std::vector<Button> buttons;
+    ClippingRect* activeClipWindow = nullptr;
 
     // UI Helpers
     void initButtons();
@@ -60,6 +61,7 @@ private:
     void redo();
     void saveScene();
     void loadScene();
+    void performClipping();
     void toggleAnimation() { isAnimating = !isAnimating; }
     void toggleSplitScreen() { isSplitScreen = !isSplitScreen; }
 };

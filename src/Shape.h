@@ -6,7 +6,7 @@
 
 class Shape {
 public:
-    enum class Type { LINE, CIRCLE, POLYGON, CURVE };
+    enum class Type { LINE, CIRCLE, POLYGON, CURVE, CLIP_RECT };
 
     Shape(Type type, Color color) : type(type), color(color) {}
     virtual ~Shape() = default;
@@ -15,6 +15,7 @@ public:
     virtual void translate(int dx, int dy) = 0;
     virtual void rotate(float angle, Point pivot) = 0;
     virtual void scale(float sx, float sy, Point pivot) = 0;
+    virtual std::string serialize() const = 0;
 
     Type getType() const { return type; }
     Color getColor() const { return color; }
@@ -36,6 +37,7 @@ public:
     void translate(int dx, int dy) override;
     void rotate(float angle, Point pivot) override;
     void scale(float sx, float sy, Point pivot) override;
+    std::string serialize() const override;
 };
 
 class CircleShape : public Shape {
@@ -51,6 +53,38 @@ public:
     void translate(int dx, int dy) override;
     void rotate(float angle, Point pivot) override;
     void scale(float sx, float sy, Point pivot) override;
+    std::string serialize() const override;
+};
+
+class BezierShape : public Shape {
+public:
+    std::vector<Point> controlPoints;
+
+    BezierShape(const std::vector<Point>& pts, Color color) 
+        : Shape(Type::CURVE, color), controlPoints(pts) {}
+
+    void draw() override;
+    void translate(int dx, int dy) override;
+    void rotate(float angle, Point pivot) override;
+    void scale(float sx, float sy, Point pivot) override;
+    std::string serialize() const override;
+};
+
+class ClippingRect : public Shape {
+public:
+    Point pMin, pMax;
+
+    ClippingRect(Point p1, Point p2, Color color) 
+        : Shape(Type::CLIP_RECT, color), pMin(p1), pMax(p2) {
+        if (pMin.x > pMax.x) std::swap(pMin.x, pMax.x);
+        if (pMin.y > pMax.y) std::swap(pMin.y, pMax.y);
+    }
+
+    void draw() override;
+    void translate(int dx, int dy) override;
+    void rotate(float angle, Point pivot) override;
+    void scale(float sx, float sy, Point pivot) override;
+    std::string serialize() const override;
 };
 
 #endif
