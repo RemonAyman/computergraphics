@@ -5,18 +5,27 @@
 
 void Storage::save(const std::string& filename, const std::vector<std::unique_ptr<Shape>>& shapes) {
     std::ofstream file(filename);
-    if (!file.is_open()) return;
+    if (!file.is_open()) {
+        std::cerr << "Failed to open " << filename << " for saving!" << std::endl;
+        return;
+    }
+    std::cout << "Saving " << shapes.size() << " shapes to " << filename << "..." << std::endl;
     for (const auto& s : shapes) {
         file << s->serialize() << "\n";
     }
     file.close();
+    std::cout << "Save successful!" << std::endl;
 }
 
 void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shape>>& shapes) {
     std::ifstream file(filename);
-    if (!file.is_open()) return;
+    if (!file.is_open()) {
+        std::cerr << "Failed to open " << filename << " for loading!" << std::endl;
+        return;
+    }
     shapes.clear();
     std::string line;
+    int count = 0;
     while (std::getline(file, line)) {
         if (line.empty()) continue;
         std::stringstream ss(line);
@@ -35,10 +44,10 @@ void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shap
             ss >> xc >> yc >> rad >> r >> g >> b >> algo;
             shapes.push_back(std::make_unique<CircleShape>(Point(xc, yc), rad, Color(r, g, b), algo));
         } else if (type == "CURVE") {
-            int count;
-            ss >> count;
+            int ptCount;
+            ss >> ptCount;
             std::vector<Point> pts;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < ptCount; i++) {
                 int px, py;
                 ss >> px >> py;
                 pts.push_back(Point(px, py));
@@ -51,6 +60,8 @@ void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shap
             ss >> x1 >> y1 >> x2 >> y2;
             shapes.push_back(std::make_unique<ClippingRect>(Point(x1, y1), Point(x2, y2), Color(0, 1, 0)));
         }
+        count++;
     }
     file.close();
+    std::cout << "Loaded " << count << " shapes from " << filename << std::endl;
 }

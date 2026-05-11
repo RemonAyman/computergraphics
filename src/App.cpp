@@ -65,6 +65,7 @@ void App::init(int argc, char** argv) {
     gluOrtho2D(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     
     initMenus();
+    loadScene();
 }
 
 void App::run() {
