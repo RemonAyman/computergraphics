@@ -1,70 +1,95 @@
-# 🎓 دليل مشروع الرسم بالحاسب (Computer Graphics Final Project)
+# 🎓 Graphics Algorithms Engine - Final Project
 
-## 📌 نبذة عن المشروع
-**العنوان**: تنفيذ الخوارزميات الأساسية للرسم بالحاسب (Implementation of Fundamental Computer Graphics Algorithms)
-**الهدف**: تطبيق عملي وشامل لكل الخوارزميات الأساسية للرسم ثنائي الأبعاد (2D) بشكل يدوي (بدون استخدام دوال الرسم الجاهزة في OpenGL)، مع واجهة تفاعلية ونظام مقارنة للأداء وحفظ البيانات.
-
----
-
-## 🛠️ تعليمات التشغيل للفريق (اقرأها بتركيز!)
-
-### 1. المتطلبات الأساسية
-- **بيئة التطوير (IDE)**: برنامج CLion (يفضل) أو VS Code.
-- **المترجم (Compiler)**: MinGW-w64 (إصدار GCC 13.1 فما فوق).
-- **المكتبات**: مكتبة FreeGLUT (يتم تحميلها وربطها تلقائياً عبر ملف الـ CMake).
-
-### 2. خطوات التشغيل (خطوة بخطوة)
-1. **افتح CLion**: قم بعمل Import لمجلد المشروع.
-2. **تحديث الـ CMake**: اضغط بيمين الماوس على ملف `CMakeLists.txt` واختار `Reload CMake Project`.
-3. **البناء والتشغيل**: اضغط على زر **Run** (الأيقونة الخضراء في الأعلى).
+## 📌 Overview
+This project is a comprehensive implementation of fundamental 2D Computer Graphics algorithms using **C++** and **OpenGL (FreeGLUT)**. It provides an interactive GUI to draw, transform, clip, and compare various algorithms manually implemented from scratch (no high-level OpenGL drawing functions used for core algorithms).
 
 ---
 
-## 📂 هيكل المشروع (عشان لو الدكتور سألك)
-المشروع متقسم لملفات منفصلة (Modular) لسهولة الفهم:
-- **`App.cpp`**: "قلب" البرنامج. مسؤول عن الواجهة، الأزرار، تحركات الماوس، ونظام الـ Split-screen.
-- **`DrawingAlgorithms.cpp`**: فيه المعادلات الرياضية لخوارزميات **DDA**, **Bresenham**, و **Midpoint**.
-- **`Transformations.cpp`**: مسؤول عن **الدوران**، **التكبير**، **الإزاحة**، **الانعكاس (Reflection)**، و **الميل (Shearing)**.
-- **`Clipping.cpp`**: لتنفيذ خوارزميات القص **Cohen-Sutherland** للخطوط و **Sutherland-Hodgman** للمضلعات.
-- **`Curves.cpp`**: لرسم منحنيات **Bezier** ومنحنيات **B-Spline**.
-- **`Storage.cpp`**: مسؤول عن حفظ وتحميل الرسمة بالكامل من ملف `scene.txt`.
-- **`Shape.cpp`**: بيتعامل مع كل شكل مرسوم كـ "كائن" (Object) بنظام OOP.
+## 🛠️ Prerequisites & Setup
+
+To run this project, you need to have the following installed:
+
+### 1. Requirements
+*   **IDE**: CLion (Recommended) or Visual Studio Code.
+*   **Compiler**: MinGW-w64 (GCC 13.1+) or any C++17 compatible compiler.
+*   **Build System**: CMake 3.20+.
+*   **Graphics Library**: FreeGLUT (included in the `external` folder/CMake config).
+
+### 2. How to Run (CLion)
+1.  **Open Project**: Launch CLion and open the project folder.
+2.  **Configure CMake**: The project uses a `CMakeLists.txt` file. CLion will automatically detect it. 
+3.  **Reload CMake**: If prompted, click "Reload CMake Project".
+4.  **Build & Run**: Click the **Run** button (Green Arrow) in the top right.
+    *   *Note: The DLLs are automatically copied to the output directory during the build process.*
+
+### 3. Manual Build (Command Line)
+If you prefer the command line:
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .
+./GraphicsAlgorithms
+```
 
 ---
 
-## 🎮 التحكم في البرنامج (أثناء العرض)
-- **رسم الخطوط/الدوائر**: اختار الأداة ودوس مرتين (البداية والنهاية).
-- **المنحنيات (Bezier/B-Spline)**: اختار الأداة ودوس 4 مرات بالماوس لتحديد نقاط التحكم.
-- **المضلعات (Draw Polygon)**: كليك شمال لإضافة الرؤوس، وكليك يمين لقفل المضلع.
-- **القص (Clipping)**: 
-    1. ارسم **Clip Window** فوق الأشكال.
-    2. استخدم **S-H Clip** لقص المضلعات.
-    3. الخطوط تُقص تلقائياً عند رسم النافذة.
-- **التحويلات**: أزرار **Reflect X/Y** و **Shear** لتعديل جميع الأشكال الموجودة.
-- **مفاتيح 'Z' / 'Y'**: للتراجع (Undo) أو الإعادة (Redo).
-- **مفتاح 'R'**: تشغيل الأنيميشن (دوران تلقائي).
-- **أزرار الحفظ**: **Save Scene** للحفظ و **Load Scene** للتحميل (يتم التحميل تلقائياً عند بدء البرنامج).
+## 🚀 Implemented Algorithms
+
+### 1. Line Drawing
+*   **DDA (Digital Differential Analyzer)**: Incremental algorithm using floating-point math.
+*   **Bresenham's Line Algorithm**: High-performance integer-only algorithm.
+
+### 2. Circle Drawing
+*   **Midpoint Circle Algorithm**: Uses 8-way symmetry and decision parameters.
+*   **Bresenham's Circle Algorithm**: Optimized error-minimization approach.
+
+### 3. 2D Transformations
+*   **Translation**: Moving shapes by (dx, dy).
+*   **Rotation**: Rotating shapes around a pivot point.
+*   **Scaling**: Uniform scaling relative to a pivot point.
+*   **Reflection**: Flip shapes across X-axis, Y-axis, or Origin.
+*   **Shearing**: Slanting shapes horizontally/vertically.
+
+### 4. Clipping
+*   **Cohen-Sutherland (Line)**: Region-code based clipping for line segments.
+*   **Sutherland-Hodgman (Polygon)**: Successive edge clipping for closed polygons.
+
+### 5. Curves
+*   **Cubic Bezier Curves**: Smooth curves using 4 control points (Bernstein basis).
+*   **Cubic B-Splines**: Local control curves using 4 control points.
 
 ---
 
-## 📚 ملخص الخوارزميات (عشان المذاكرة للمناقشة)
-1. **DDA & Bresenham**: لرسم الخطوط بكفاءة مختلفة.
-2. **Midpoint & Bresenham Circle**: لرسم الدوائر باستخدام التماثل الثماني.
-3. **Cohen-Sutherland**: قص الخطوط باستخدام الـ Outcodes.
-4. **Sutherland-Hodgman**: قص المضلعات مقابل حدود النافذة واحداً تلو الآخر.
-5. **Bezier & B-Spline**: رسم منحنيات انسيابية باستخدام نقاط التحكم ومعادلات الـ Polynomials.
+## 🎮 How to Use the App
+
+*   **Drawing Shapes**: Click a tool (e.g., DDA Line), then click twice on the grid.
+*   **Bezier/B-Spline**: Click 4 times on the grid to define control points.
+*   **Polygons**: Click multiple times (Left Click) to add vertices, and **Right Click** to close the polygon.
+*   **Clipping**:
+    1.  Draw a **Clip Window** over your shapes.
+    2.  Click **S-H Clip** to clip polygons.
+    3.  Lines are clipped automatically when the window is drawn.
+*   **Persistence**:
+    *   **Save Scene**: Saves current state to `scene.txt`.
+    *   **Load Scene**: Restores scene (Auto-loads on startup).
+*   **Comparison**: Use **Compare (Split Screen)** to view performance metrics side-by-side.
 
 ---
 
-## 🏆 المميزات الإضافية (Bonus)
-- [x] واجهة مستخدم (Dark Mode) احترافية.
-- [x] نظام Undo/Redo كامل.
-- [x] حفظ وتحميل الرسم (Persistence).
-- [x] قياس أداء حي (الوقت بالميكروثانية).
-- [x] نظام أنيميشن تفاعلي.
-- [x] قص مضلعات متطور (S-H Algorithm).
-- [x] منحنيات B-Spline.
-- [x] تحويلات هندسية متكاملة (Reflection & Shearing).
+## 🏆 Bonus Features (Fully Implemented)
+*   [x] **Real-time Performance Stats**: Shows pixel count and execution time (μs).
+*   [x] **Undo/Redo System**: Full support for all shape types (Keys: Z/Y).
+*   [x] **Interactive Animation**: Rotate all objects in the scene dynamically (Key: R).
+*   [x] **Save/Load System**: Full serialization of the drawing scene.
+*   [x] **Sutherland-Hodgman Polygon Clipping**: Advanced clipping for closed shapes.
+*   [x] **Modern Dark UI**: Intuitive sidebar with hover effects.
 
 ---
-**تم التطوير بكل حب للمناقشة النهائية. بالتوفيق يا رجالة!** ❤️🎓
+
+## 📝 Documentation
+For a detailed technical explanation of each algorithm in Arabic, please refer to:
+*   [Algorithms Explanation (Arabic)](file:///e:/graphicsproject/Algorithms_Explanation_AR.md)
+*   [Algorithms Comparison (Arabic)](file:///e:/graphicsproject/Algorithms_Comparison_AR.md)
+
+---
+**Developed for the Computer Graphics Final Project. © 2026**
