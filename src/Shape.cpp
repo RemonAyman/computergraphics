@@ -34,8 +34,11 @@ void CircleShape::reflect(std::string axis) { Transformations::reflectPoint(cent
 void CircleShape::shear(float shx, float shy) { Transformations::shearPoint(center.x, center.y, shx, shy); }
 std::string CircleShape::serialize() const { return "CIRCLE " + std::to_string(center.x) + " " + std::to_string(center.y) + " " + std::to_string(radius) + " " + std::to_string(color.r) + " " + std::to_string(color.g) + " " + std::to_string(color.b) + " " + algo; }
 
-// Bezier Implementation
-void BezierShape::draw() { Curves::drawBezier(controlPoints, 50, color); }
+// Bezier/BSpline Implementation
+void BezierShape::draw() { 
+    if (algo == "BSpline") Curves::drawBSpline(controlPoints, 50, color);
+    else Curves::drawBezier(controlPoints, 50, color); 
+}
 void BezierShape::translate(int dx, int dy) { for (auto& p : controlPoints) { p.x += dx; p.y += dy; } }
 void BezierShape::rotate(float angle, Point pivot) { for (auto& p : controlPoints) Transformations::rotatePoint(p.x, p.y, pivot.x, pivot.y, angle); }
 void BezierShape::scale(float sx, float sy, Point pivot) { for (auto& p : controlPoints) { p.x = pivot.x + (int)((p.x - pivot.x) * sx); p.y = pivot.y + (int)((p.y - pivot.y) * sy); } }
@@ -44,7 +47,7 @@ void BezierShape::shear(float shx, float shy) { for (auto& p : controlPoints) Tr
 std::string BezierShape::serialize() const {
     std::string s = "CURVE " + std::to_string(controlPoints.size());
     for (auto& p : controlPoints) s += " " + std::to_string(p.x) + " " + std::to_string(p.y);
-    s += " " + std::to_string(color.r) + " " + std::to_string(color.g) + " " + std::to_string(color.b);
+    s += " " + std::to_string(color.r) + " " + std::to_string(color.g) + " " + std::to_string(color.b) + " " + algo;
     return s;
 }
 

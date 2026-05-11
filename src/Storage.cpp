@@ -53,8 +53,9 @@ void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shap
                 pts.push_back(Point(px, py));
             }
             float r, g, b;
-            ss >> r >> g >> b;
-            shapes.push_back(std::make_unique<BezierShape>(pts, Color(r, g, b)));
+            std::string algo;
+            ss >> r >> g >> b >> algo;
+            shapes.push_back(std::make_unique<BezierShape>(pts, Color(r, g, b), algo));
         } else if (type == "CLIP") {
             int x1, y1, x2, y2;
             ss >> x1 >> y1 >> x2 >> y2;

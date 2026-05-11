@@ -205,12 +205,8 @@ void App::mouseCallback(int button, int state, int x, int y) {
                 } else if (app.currentMode == AppMode::CURVE_BEZIER || app.currentMode == AppMode::CURVE_BSPLINE) {
                     app.inputPoints.push_back({x, y});
                     if (app.inputPoints.size() == 4) {
-                        if (app.currentMode == AppMode::CURVE_BEZIER) app.shapes.push_back(std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_WHITE));
-                        else {
-                            // Using BezierShape container but logic for BSpline
-                            auto b = std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_RED);
-                            app.shapes.push_back(std::move(b));
-                        }
+                        if (app.currentMode == AppMode::CURVE_BEZIER) app.shapes.push_back(std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_WHITE, "Bezier"));
+                        else app.shapes.push_back(std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_RED, "BSpline"));
                         app.inputPoints.clear(); app.isDrawing = false;
                     } else { app.isDrawing = true; }
                 } else if (app.currentMode != AppMode::NONE) {

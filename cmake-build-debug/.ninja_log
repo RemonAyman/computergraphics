@@ -63,3 +63,9 @@
 21	4703	8002356948069879	CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj	de9566abb4323b8e
 16	5131	8002356948004182	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	dbd49048a4c1fdb7
 5131	5926	8002356999172908	GraphicsAlgorithms.exe	36c9ef137ec7702d
+17	1111	8002365255551288	CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj	44bc2b8dd14868a3
+31	2677	8002365255688754	CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj	f9c2d693ec696e61
+22	2694	8002365255597949	CMakeFiles/GraphicsAlgorithms.dir/src/Shape.cpp.obj	dee464bafbe579a3
+27	3218	8002365255628369	CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj	de9566abb4323b8e
+13	3416	8002365255511156	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	dbd49048a4c1fdb7
+3416	3957	8002365289511991	GraphicsAlgorithms.exe	36c9ef137ec7702d

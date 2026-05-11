@@ -5,7 +5,7 @@ int Clipping::computeCode(int x, int y, int xmin, int ymin, int xmax, int ymax) 
     if (x < xmin) code |= LEFT;
     else if (x > xmax) code |= RIGHT;
     if (y < ymin) code |= BOTTOM;
-    else if (y > xmax) code |= TOP; // Error here in previous logic, fixed xmax to ymax
+    else if (y > ymax) code |= TOP;
     return code;
 }
 

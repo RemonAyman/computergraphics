@@ -65,9 +65,10 @@ public:
 class BezierShape : public Shape {
 public:
     std::vector<Point> controlPoints;
+    std::string algo;
 
-    BezierShape(const std::vector<Point>& pts, Color color) 
-        : Shape(Type::CURVE, color), controlPoints(pts) {}
+    BezierShape(const std::vector<Point>& pts, Color color, std::string algo = "Bezier") 
+        : Shape(Type::CURVE, color), controlPoints(pts), algo(algo) {}
 
     void draw() override;
     void translate(int dx, int dy) override;
