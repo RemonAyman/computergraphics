@@ -3,68 +3,63 @@
 #include "Clipping.h"
 #include "Curves.h"
 #include "Storage.h"
+#include "Transformations.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <algorithm>
 
 App::App() : currentMode(AppMode::NONE), isDrawing(false), isSplitScreen(false), 
-             isAnimating(false), animAngle(0.0f), animScale(1.0f), scaleUp(true) {
+             isAnimating(false), animAngle(0.0f), animScale(1.0f), scaleUp(true), activeClipWindow(nullptr) {
     initButtons();
 }
 
 void App::initButtons() {
     int y = 50;
-    int btnH = 25;
-    int spacing = 8;
+    int btnH = 20;
+    int spacing = 5;
 
-    buttons.push_back({"DDA Line", 10, y, 230, btnH, AppMode::DRAW_DDA}); y += btnH + spacing;
-    buttons.push_back({"Bresenham Line", 10, y, 230, btnH, AppMode::DRAW_BRESENHAM}); y += btnH + spacing;
-    buttons.push_back({"Midpoint Circle", 10, y, 230, btnH, AppMode::DRAW_CIRCLE_MIDPOINT}); y += btnH + spacing;
-    buttons.push_back({"Bresenham Circle", 10, y, 230, btnH, AppMode::DRAW_CIRCLE_BRESENHAM}); y += 15 + btnH + spacing;
+    buttons.push_back({"DDA Line", 10, y, 110, btnH, AppMode::DRAW_DDA}); 
+    buttons.push_back({"Bres. Line", 130, y, 110, btnH, AppMode::DRAW_BRESENHAM}); y += btnH + spacing;
+    buttons.push_back({"Mid. Circle", 10, y, 110, btnH, AppMode::DRAW_CIRCLE_MIDPOINT}); 
+    buttons.push_back({"Bres. Circle", 130, y, 110, btnH, AppMode::DRAW_CIRCLE_BRESENHAM}); y += btnH + spacing;
+    
+    buttons.push_back({"Bezier Curve", 10, y, 110, btnH, AppMode::CURVE_BEZIER}); 
+    buttons.push_back({"B-Spline", 130, y, 110, btnH, AppMode::CURVE_BSPLINE}); y += btnH + spacing;
+    
+    buttons.push_back({"Draw Polygon", 10, y, 230, btnH, AppMode::CLIPPING_POLYGON}); y += btnH + spacing + 10;
 
-    buttons.push_back({"Animate (R)", 10, y, 230, btnH, AppMode::TRANSFORM_ROTATE}); y += btnH + spacing;
-    buttons.push_back({"Split Compare", 10, y, 230, btnH, AppMode::NONE}); y += 15 + btnH + spacing;
+    buttons.push_back({"Reflect X", 10, y, 70, btnH, AppMode::NONE});
+    buttons.push_back({"Reflect Y", 90, y, 70, btnH, AppMode::NONE});
+    buttons.push_back({"Reflect O", 170, y, 70, btnH, AppMode::NONE}); y += btnH + spacing;
+    
+    buttons.push_back({"Shear (0.2)", 10, y, 230, btnH, AppMode::NONE}); y += btnH + spacing + 10;
 
-    buttons.push_back({"Bezier Curve", 10, y, 230, btnH, AppMode::CURVE_BEZIER}); y += btnH + spacing;
-    buttons.push_back({"Clip Window", 10, y, 230, btnH, AppMode::CLIPPING_LINE}); y += 15 + btnH + spacing;
+    buttons.push_back({"Clip Window", 10, y, 110, btnH, AppMode::CLIPPING_LINE}); 
+    buttons.push_back({"S-H Clip", 130, y, 110, btnH, AppMode::NONE}); y += btnH + spacing + 10;
+
+    buttons.push_back({"Animate (R)", 10, y, 110, btnH, AppMode::NONE});
+    buttons.push_back({"Compare", 130, y, 110, btnH, AppMode::NONE}); y += btnH + spacing + 10;
 
     buttons.push_back({"Undo (Z)", 10, y, 110, btnH, AppMode::NONE});
     buttons.push_back({"Redo (Y)", 130, y, 110, btnH, AppMode::NONE}); y += btnH + spacing;
     buttons.push_back({"Save Scene", 10, y, 110, btnH, AppMode::NONE});
-    buttons.push_back({"Load Scene", 130, y, 110, btnH, AppMode::NONE});
-}
-
-void App::initMenus() {
-    int drawMenu = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("DDA Line", 1);
-    glutAddMenuEntry("Bresenham Line", 2);
-    glutAddMenuEntry("Midpoint Circle", 3);
-    
-    int transMenu = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("Toggle Animation", 4);
-    glutAddMenuEntry("Split Screen", 5);
-
-    glutCreateMenu(menuCallback);
-    glutAddSubMenu("Drawing", drawMenu);
-    glutAddSubMenu("Transformations", transMenu);
-    glutAddMenuEntry("Clear All", 6);
-    glutAddMenuEntry("Exit", 7);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
+    buttons.push_back({"Load Scene", 130, y, 110, btnH, AppMode::NONE}); y += btnH + spacing;
+    buttons.push_back({"Clear All", 10, y, 230, btnH, AppMode::NONE});
 }
 
 void App::init(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    glutCreateWindow("Implementation of Fundamental Computer Graphics Algorithms");
+    glutCreateWindow("Computer Graphics Project - Final Implementation");
 
     glClearColor(APP_COLOR_BG.r, APP_COLOR_BG.g, APP_COLOR_BG.b, 1.0f);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     
-    initMenus();
     loadScene();
 }
 
@@ -105,17 +100,15 @@ void App::render() {
 
     if (isDrawing && !inputPoints.empty()) {
         glColor3f(1.0f, 1.0f, 1.0f);
-        glBegin(GL_LINES);
-        glVertex2i(inputPoints[0].x, inputPoints[0].y);
-        glVertex2i(mousePos.x, mousePos.y);
-        glEnd();
-        
-        // Show control points for bezier during selection
-        if (currentMode == AppMode::CURVE_BEZIER) {
-            glColor3f(1.0f, 0.0f, 0.0f);
-            glPointSize(5.0f);
-            glBegin(GL_POINTS);
+        if (currentMode == AppMode::CLIPPING_POLYGON) {
+            glBegin(GL_LINE_STRIP);
             for (const auto& p : inputPoints) glVertex2i(p.x, p.y);
+            glVertex2i(mousePos.x, mousePos.y);
+            glEnd();
+        } else {
+            glBegin(GL_LINES);
+            glVertex2i(inputPoints[0].x, inputPoints[0].y);
+            glVertex2i(mousePos.x, mousePos.y);
             glEnd();
         }
     }
@@ -146,7 +139,7 @@ void App::renderSidebar() {
     glEnd();
 
     glColor3f(0.0f, 0.7f, 1.0f);
-    drawText(10, 30, "GRAPHICS ENGINE v1.0", GLUT_BITMAP_HELVETICA_18);
+    drawText(10, 30, "GRAPHICS ENGINE PRO", GLUT_BITMAP_HELVETICA_18);
 
     for (auto& btn : buttons) {
         if (btn.isHovered) glColor3f(0.35f, 0.35f, 0.35f);
@@ -159,7 +152,7 @@ void App::renderSidebar() {
         glEnd();
 
         glColor3f(1, 1, 1);
-        drawText(btn.x + 10, btn.y + 18, btn.label, GLUT_BITMAP_HELVETICA_12);
+        drawText(btn.x + 5, btn.y + 15, btn.label, GLUT_BITMAP_HELVETICA_12);
     }
 }
 
@@ -180,113 +173,109 @@ void App::renderStatusBar() {
 void App::handleButtonClick(Button& btn) {
     if (btn.label == "Undo (Z)") undo();
     else if (btn.label == "Redo (Y)") redo();
-    else if (btn.label == "Split Compare") toggleSplitScreen();
+    else if (btn.label == "Compare") toggleSplitScreen();
     else if (btn.label == "Animate (R)") toggleAnimation();
     else if (btn.label == "Save Scene") saveScene();
     else if (btn.label == "Load Scene") loadScene();
+    else if (btn.label == "Clear All") { shapes.clear(); activeClipWindow = nullptr; }
+    else if (btn.label == "Reflect X") { for (auto& s : shapes) s->reflect("X"); }
+    else if (btn.label == "Reflect Y") { for (auto& s : shapes) s->reflect("Y"); }
+    else if (btn.label == "Reflect O") { for (auto& s : shapes) s->reflect("Origin"); }
+    else if (btn.label == "Shear (0.2)") { for (auto& s : shapes) s->shear(0.2f, 0.0f); }
+    else if (btn.label == "S-H Clip") { performPolygonClipping(); }
     else {
         currentMode = btn.mode;
         inputPoints.clear();
         isDrawing = false;
-        if (currentMode != AppMode::NONE) createDemoShape();
     }
-}
-
-void App::createDemoShape() {
-    Point center = { (WINDOW_WIDTH + SIDEBAR_WIDTH) / 2, WINDOW_HEIGHT / 2 };
-    if (currentMode == AppMode::DRAW_DDA || currentMode == AppMode::DRAW_BRESENHAM) {
-        shapes.push_back(std::make_unique<LineShape>(Point(center.x - 100, center.y), Point(center.x + 100, center.y), APP_COLOR_WHITE, (currentMode == AppMode::DRAW_DDA ? "DDA" : "Bresenham")));
-    } else if (currentMode == AppMode::DRAW_CIRCLE_MIDPOINT || currentMode == AppMode::DRAW_CIRCLE_BRESENHAM) {
-        shapes.push_back(std::make_unique<CircleShape>(center, 80, APP_COLOR_WHITE, (currentMode == AppMode::DRAW_CIRCLE_MIDPOINT ? "Midpoint" : "Bresenham")));
-    }
-}
-
-void App::menuCallback(int id) {
-    App& app = getInstance();
-    switch(id) {
-        case 1: app.currentMode = AppMode::DRAW_DDA; break;
-        case 2: app.currentMode = AppMode::DRAW_BRESENHAM; break;
-        case 4: app.toggleAnimation(); break;
-        case 5: app.toggleSplitScreen(); break;
-        case 6: app.shapes.clear(); app.activeClipWindow = nullptr; break;
-        case 7: exit(0);
-    }
-    glutPostRedisplay();
-}
-
-void App::drawText(int x, int y, std::string text, void* font) {
-    glRasterPos2i(x, y);
-    for (char c : text) glutBitmapCharacter(font, c);
-}
-
-void App::displayCallback() { getInstance().render(); }
-void App::reshapeCallback(int w, int h) { 
-    glViewport(0, 0, w, h); 
-    glMatrixMode(GL_PROJECTION); glLoadIdentity();
-    gluOrtho2D(0, w, h, 0);
 }
 
 void App::mouseCallback(int button, int state, int x, int y) {
     App& app = getInstance();
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+    if (state == GLUT_DOWN) {
         if (x < SIDEBAR_WIDTH) {
-            for (auto& btn : app.buttons) if (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h) app.handleButtonClick(btn);
+            if (button == GLUT_LEFT_BUTTON) {
+                for (auto& btn : app.buttons) if (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h) app.handleButtonClick(btn);
+            }
         } else {
-            if (app.currentMode != AppMode::NONE) {
-                if (app.currentMode == AppMode::CURVE_BEZIER) {
+            if (button == GLUT_LEFT_BUTTON) {
+                if (app.currentMode == AppMode::CLIPPING_POLYGON) {
+                    app.inputPoints.push_back({x, y});
+                    app.isDrawing = true;
+                } else if (app.currentMode == AppMode::CURVE_BEZIER || app.currentMode == AppMode::CURVE_BSPLINE) {
                     app.inputPoints.push_back({x, y});
                     if (app.inputPoints.size() == 4) {
-                        app.shapes.push_back(std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_WHITE));
-                        app.inputPoints.clear();
-                        app.isDrawing = false;
+                        if (app.currentMode == AppMode::CURVE_BEZIER) app.shapes.push_back(std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_WHITE));
+                        else {
+                            // Using BezierShape container but logic for BSpline
+                            auto b = std::make_unique<BezierShape>(app.inputPoints, APP_COLOR_RED);
+                            app.shapes.push_back(std::move(b));
+                        }
+                        app.inputPoints.clear(); app.isDrawing = false;
                     } else { app.isDrawing = true; }
-                } else if (app.currentMode == AppMode::CLIPPING_LINE) {
-                    if (!app.isDrawing) { app.inputPoints.clear(); app.inputPoints.push_back({x, y}); app.isDrawing = true; }
-                    else {
-                        auto rect = std::make_unique<ClippingRect>(app.inputPoints[0], Point(x, y), APP_COLOR_GREEN);
-                        app.activeClipWindow = rect.get();
-                        app.shapes.push_back(std::move(rect));
-                        app.performClipping();
-                        app.isDrawing = false;
-                        app.currentMode = AppMode::NONE;
-                    }
-                } else {
+                } else if (app.currentMode != AppMode::NONE) {
                     if (!app.isDrawing) { app.inputPoints.clear(); app.inputPoints.push_back({x, y}); app.isDrawing = true; }
                     else {
                         if (app.currentMode == AppMode::DRAW_DDA || app.currentMode == AppMode::DRAW_BRESENHAM)
                             app.shapes.push_back(std::make_unique<LineShape>(app.inputPoints[0], Point(x, y), APP_COLOR_WHITE, (app.currentMode == AppMode::DRAW_DDA ? "DDA" : "Bresenham")));
                         else if (app.currentMode == AppMode::DRAW_CIRCLE_MIDPOINT || app.currentMode == AppMode::DRAW_CIRCLE_BRESENHAM)
                             app.shapes.push_back(std::make_unique<CircleShape>(app.inputPoints[0], (int)std::sqrt(std::pow(x-app.inputPoints[0].x,2)+std::pow(y-app.inputPoints[0].y,2)), APP_COLOR_WHITE, (app.currentMode == AppMode::DRAW_CIRCLE_MIDPOINT ? "Midpoint" : "Bresenham")));
+                        else if (app.currentMode == AppMode::CLIPPING_LINE) {
+                            auto rect = std::make_unique<ClippingRect>(app.inputPoints[0], Point(x, y), APP_COLOR_GREEN);
+                            app.activeClipWindow = rect.get();
+                            app.shapes.push_back(std::move(rect));
+                            app.performClipping();
+                        }
                         app.isDrawing = false;
                     }
                 }
+            } else if (button == GLUT_RIGHT_BUTTON && app.currentMode == AppMode::CLIPPING_POLYGON) {
+                if (app.inputPoints.size() >= 3) {
+                    app.shapes.push_back(std::make_unique<PolygonShape>(app.inputPoints, APP_COLOR_WHITE));
+                }
+                app.inputPoints.clear(); app.isDrawing = false;
             }
         }
     }
     glutPostRedisplay();
 }
 
-void App::passiveMouseCallback(int x, int y) {
-    App& app = getInstance(); app.mousePos = {x, y};
-    for (auto& btn : app.buttons) btn.isHovered = (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h);
-    glutPostRedisplay();
+void App::undo() { if (!shapes.empty()) { if (shapes.back().get() == activeClipWindow) activeClipWindow = nullptr; redoStack.push_back(std::move(shapes.back())); shapes.pop_back(); } }
+void App::redo() { if (!redoStack.empty()) { if (redoStack.back()->getType() == Shape::Type::CLIP_RECT) activeClipWindow = static_cast<ClippingRect*>(redoStack.back().get()); shapes.push_back(std::move(redoStack.back())); redoStack.pop_back(); } }
+
+void App::performClipping() {
+    if (!activeClipWindow) return;
+    int xmin = activeClipWindow->pMin.x, ymin = activeClipWindow->pMin.y;
+    int xmax = activeClipWindow->pMax.x, ymax = activeClipWindow->pMax.y;
+    for (auto& shape : shapes) {
+        if (shape->getType() == Shape::Type::LINE) {
+            LineShape* line = static_cast<LineShape*>(shape.get());
+            int x1 = line->p1.x, y1 = line->p1.y, x2 = line->p2.x, y2 = line->p2.y;
+            if (Clipping::cohenSutherlandClip(x1, y1, x2, y2, xmin, ymin, xmax, ymax)) { line->p1 = {x1, y1}; line->p2 = {x2, y2}; }
+            else { line->p1 = line->p2 = {-100, -100}; }
+        }
+    }
 }
 
-void App::undo() { 
-    if (!shapes.empty()) { 
-        if (shapes.back().get() == activeClipWindow) activeClipWindow = nullptr;
-        redoStack.push_back(std::move(shapes.back())); 
-        shapes.pop_back(); 
-    } 
-}
-void App::redo() { 
-    if (!redoStack.empty()) { 
-        if (redoStack.back()->getType() == Shape::Type::CLIP_RECT) activeClipWindow = static_cast<ClippingRect*>(redoStack.back().get());
-        shapes.push_back(std::move(redoStack.back())); 
-        redoStack.pop_back(); 
-    } 
+void App::performPolygonClipping() {
+    if (!activeClipWindow) return;
+    int xmin = activeClipWindow->pMin.x, ymin = activeClipWindow->pMin.y;
+    int xmax = activeClipWindow->pMax.x, ymax = activeClipWindow->pMax.y;
+    for (auto& shape : shapes) {
+        if (shape->getType() == Shape::Type::POLYGON) {
+            PolygonShape* poly = static_cast<PolygonShape*>(shape.get());
+            poly->vertices = Clipping::sutherlandHodgmanClip(poly->vertices, xmin, ymin, xmax, ymax);
+        }
+    }
 }
 
+void App::saveScene() { Storage::save("scene.txt", shapes); }
+void App::loadScene() { Storage::load("scene.txt", shapes); activeClipWindow = nullptr; for (auto& s : shapes) if (s->getType() == Shape::Type::CLIP_RECT) activeClipWindow = static_cast<ClippingRect*>(s.get()); }
+void App::toggleAnimation() { isAnimating = !isAnimating; }
+void App::toggleSplitScreen() { isSplitScreen = !isSplitScreen; }
+
+void App::displayCallback() { getInstance().render(); }
+void App::reshapeCallback(int w, int h) { glViewport(0, 0, w, h); glMatrixMode(GL_PROJECTION); glLoadIdentity(); gluOrtho2D(0, w, h, 0); }
 void App::keyboardCallback(unsigned char key, int x, int y) {
     App& app = getInstance();
     if (key == 'z' || key == 'Z') app.undo();
@@ -295,31 +284,9 @@ void App::keyboardCallback(unsigned char key, int x, int y) {
     if (key == 27) exit(0);
     glutPostRedisplay();
 }
-
-void App::saveScene() {
-    Storage::save("scene.txt", shapes);
+void App::passiveMouseCallback(int x, int y) {
+    App& app = getInstance(); app.mousePos = {x, y};
+    for (auto& btn : app.buttons) btn.isHovered = (x >= btn.x && x <= btn.x + btn.w && y >= btn.y && y <= btn.y + btn.h);
+    glutPostRedisplay();
 }
-
-void App::loadScene() {
-    Storage::load("scene.txt", shapes);
-    activeClipWindow = nullptr;
-    for (auto& s : shapes) if (s->getType() == Shape::Type::CLIP_RECT) activeClipWindow = static_cast<ClippingRect*>(s.get());
-}
-
-void App::performClipping() {
-    if (!activeClipWindow) return;
-    int xmin = activeClipWindow->pMin.x, ymin = activeClipWindow->pMin.y;
-    int xmax = activeClipWindow->pMax.x, ymax = activeClipWindow->pMax.y;
-
-    for (auto& shape : shapes) {
-        if (shape->getType() == Shape::Type::LINE) {
-            LineShape* line = static_cast<LineShape*>(shape.get());
-            int x1 = line->p1.x, y1 = line->p1.y, x2 = line->p2.x, y2 = line->p2.y;
-            if (Clipping::cohenSutherlandClip(x1, y1, x2, y2, xmin, ymin, xmax, ymax)) {
-                line->p1 = {x1, y1}; line->p2 = {x2, y2};
-            } else {
-                line->p1 = line->p2 = {-100, -100}; 
-            }
-        }
-    }
-}
+void App::drawText(int x, int y, std::string text, void* font) { glRasterPos2i(x, y); for (char c : text) glutBitmapCharacter(font, c); }

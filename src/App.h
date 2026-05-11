@@ -62,8 +62,9 @@ private:
     void saveScene();
     void loadScene();
     void performClipping();
-    void toggleAnimation() { isAnimating = !isAnimating; }
-    void toggleSplitScreen() { isSplitScreen = !isSplitScreen; }
+    void performPolygonClipping();
+    void toggleAnimation();
+    void toggleSplitScreen();
 };
 
 #endif

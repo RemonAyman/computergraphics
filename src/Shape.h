@@ -15,6 +15,8 @@ public:
     virtual void translate(int dx, int dy) = 0;
     virtual void rotate(float angle, Point pivot) = 0;
     virtual void scale(float sx, float sy, Point pivot) = 0;
+    virtual void reflect(std::string axis) = 0;
+    virtual void shear(float shx, float shy) = 0;
     virtual std::string serialize() const = 0;
 
     Type getType() const { return type; }
@@ -37,6 +39,8 @@ public:
     void translate(int dx, int dy) override;
     void rotate(float angle, Point pivot) override;
     void scale(float sx, float sy, Point pivot) override;
+    void reflect(std::string axis) override;
+    void shear(float shx, float shy) override;
     std::string serialize() const override;
 };
 
@@ -53,6 +57,8 @@ public:
     void translate(int dx, int dy) override;
     void rotate(float angle, Point pivot) override;
     void scale(float sx, float sy, Point pivot) override;
+    void reflect(std::string axis) override;
+    void shear(float shx, float shy) override;
     std::string serialize() const override;
 };
 
@@ -67,6 +73,24 @@ public:
     void translate(int dx, int dy) override;
     void rotate(float angle, Point pivot) override;
     void scale(float sx, float sy, Point pivot) override;
+    void reflect(std::string axis) override;
+    void shear(float shx, float shy) override;
+    std::string serialize() const override;
+};
+
+class PolygonShape : public Shape {
+public:
+    std::vector<Point> vertices;
+
+    PolygonShape(const std::vector<Point>& v, Color color) 
+        : Shape(Type::POLYGON, color), vertices(v) {}
+
+    void draw() override;
+    void translate(int dx, int dy) override;
+    void rotate(float angle, Point pivot) override;
+    void scale(float sx, float sy, Point pivot) override;
+    void reflect(std::string axis) override;
+    void shear(float shx, float shy) override;
     std::string serialize() const override;
 };
 
@@ -84,6 +108,8 @@ public:
     void translate(int dx, int dy) override;
     void rotate(float angle, Point pivot) override;
     void scale(float sx, float sy, Point pivot) override;
+    void reflect(std::string axis) override {}
+    void shear(float shx, float shy) override {}
     std::string serialize() const override;
 };
 

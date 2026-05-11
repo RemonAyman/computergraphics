@@ -1,4 +1,0 @@
-[1/4] Building CXX object CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj
-FAILED: CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj 
-"E:\Program Files\CLion 2025.3.2\bin\mingw\bin\g++.exe"  -IE:/graphicsproject/src -g -std=gnu++17 -fdiagnostics-color=always -MD -MT CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj -MF CMakeFiles\GraphicsAlgorithms.dir\src\App.cpp.obj.d -o CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj -c E:/graphicsproject/src/App.cpp
-ninja: build stopped: subcommand failed.

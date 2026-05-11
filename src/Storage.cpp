@@ -59,6 +59,18 @@ void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shap
             int x1, y1, x2, y2;
             ss >> x1 >> y1 >> x2 >> y2;
             shapes.push_back(std::make_unique<ClippingRect>(Point(x1, y1), Point(x2, y2), Color(0, 1, 0)));
+        } else if (type == "POLYGON") {
+            int vCount;
+            ss >> vCount;
+            std::vector<Point> verts;
+            for (int i = 0; i < vCount; i++) {
+                int vx, vy;
+                ss >> vx >> vy;
+                verts.push_back(Point(vx, vy));
+            }
+            float r, g, b;
+            ss >> r >> g >> b;
+            shapes.push_back(std::make_unique<PolygonShape>(verts, Color(r, g, b)));
         }
         count++;
     }
