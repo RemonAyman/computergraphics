@@ -47,7 +47,8 @@ enum class AppMode {
     CLIPPING_LINE,
     CLIPPING_POLYGON,
     CURVE_BEZIER,
-    CURVE_BSPLINE
+    CURVE_BSPLINE,
+    DRAW_POLYGON
 };
 
 struct Button {

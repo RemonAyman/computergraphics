@@ -310,6 +310,7 @@ void App::initButtons() {
   y += 10;
   addBtn("Line Clip", AppMode::CLIPPING_LINE);
   addBtn("Polygon Clip", AppMode::CLIPPING_POLYGON);
+  addBtn("Draw Polygon", AppMode::DRAW_POLYGON);
 
   y += 10;
   addBtn("Compare & Charts", AppMode::NONE);
@@ -497,12 +498,13 @@ void App::mouseCallback(int button, int state, int x, int y) {
         app.shapes.push_back(std::make_unique<CircleShape>(
             app.inputPoints[0], (int)d, APP_COLOR_RED, "Bresenham"));
         created = true;
-      } else if (app.currentMode == AppMode::CURVE_BEZIER &&
+      } else if ((app.currentMode == AppMode::CURVE_BEZIER || app.currentMode == AppMode::CURVE_BSPLINE) &&
                  app.inputPoints.size() == 4) {
+        std::string algo = (app.currentMode == AppMode::CURVE_BSPLINE) ? "BSpline" : "Bezier";
         app.shapes.push_back(std::make_unique<BezierShape>(
-            app.inputPoints, APP_COLOR_WHITE, "Bezier"));
+            app.inputPoints, APP_COLOR_WHITE, algo));
         created = true;
-      } else if (app.currentMode == AppMode::CLIPPING_LINE &&
+      } else if ((app.currentMode == AppMode::CLIPPING_LINE || app.currentMode == AppMode::CLIPPING_POLYGON) &&
                  app.inputPoints.size() == 2) {
         if (app.activeClipWindow)
           delete app.activeClipWindow;
@@ -510,6 +512,30 @@ void App::mouseCallback(int button, int state, int x, int y) {
             app.inputPoints[0], app.inputPoints[1], APP_COLOR_WHITE);
         app.inputPoints.clear();
         app.isDrawing = false;
+      } else if (app.currentMode == AppMode::TRANSFORM_TRANSLATE) {
+        int dx = x - WINDOW_WIDTH / 2;
+        int dy = y - WINDOW_HEIGHT / 2;
+        for (auto &s : app.shapes) s->translate(dx, dy);
+        app.inputPoints.clear();
+        app.isDrawing = false;
+      } else if (app.currentMode == AppMode::TRANSFORM_ROTATE) {
+        Point pivot = {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
+        for (auto &s : app.shapes) s->rotate(15.0f, pivot);
+        app.inputPoints.clear();
+        app.isDrawing = false;
+      } else if (app.currentMode == AppMode::TRANSFORM_SCALE) {
+        Point pivot = {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
+        for (auto &s : app.shapes) s->scale(1.1f, 1.1f, pivot);
+        app.inputPoints.clear();
+        app.isDrawing = false;
+      } else if (app.currentMode == AppMode::TRANSFORM_SHEAR) {
+        for (auto &s : app.shapes) s->shear(0.1f, 0.0f);
+        app.inputPoints.clear();
+        app.isDrawing = false;
+      } else if (app.currentMode == AppMode::DRAW_POLYGON && app.inputPoints.size() == 4) {
+        app.shapes.push_back(std::make_unique<PolygonShape>(
+            app.inputPoints, APP_COLOR_ACCENT));
+        created = true;
       }
       if (created) {
         app.inputPoints.clear();

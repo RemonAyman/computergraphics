@@ -57,3 +57,16 @@
 6	3659	8002497859555950	E:/graphicsproject/cmake-build-debug/_deps/freeglut-build/cmake_install.cmake	a055c8d826bd8db5
 15	3154	8002504432994970	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	9eb262e91a45d0ab
 3155	3482	8002504464402153	GraphicsAlgorithms.exe	86d29f37d2e537d3
+24	2971	8002908874811376	CMakeFiles/GraphicsAlgorithms.dir/src/DrawingAlgorithms.cpp.obj	81985f41dd72231c
+28	3144	8002908874855369	CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj	2ff15db79053bd3d
+19	4893	8002908874761884	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	9eb262e91a45d0ab
+4893	5416	8002908923500494	GraphicsAlgorithms.exe	86d29f37d2e537d3
+22	1443	8002920107635173	CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj	bc8927570423df1a
+1444	2722	8002920121862652	CMakeFiles/GraphicsAlgorithms.dir/src/Transformations.cpp.obj	1f021ebcf995b6e2
+37	2788	8002920107797864	CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj	dc654caf1be60b7e
+28	3256	8002920107706938	CMakeFiles/GraphicsAlgorithms.dir/src/DrawingAlgorithms.cpp.obj	81985f41dd72231c
+25	3267	8002920107667868	CMakeFiles/GraphicsAlgorithms.dir/src/Curves.cpp.obj	b53b1bb9f5d8969a
+32	3852	8002920107738965	CMakeFiles/GraphicsAlgorithms.dir/src/Shape.cpp.obj	c5f8f3f3ed45e933
+17	4641	8002920107591551	CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj	9eb262e91a45d0ab
+2722	4968	8002920134640890	CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj	2ff15db79053bd3d
+4968	5324	8002920157103753	GraphicsAlgorithms.exe	86d29f37d2e537d3
