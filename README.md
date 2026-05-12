@@ -1,95 +1,76 @@
-# 🎓 Graphics Algorithms Engine - Final Project
+# 🎓 Graphics Algorithms Engine - Professional V2.2 (Final)
 
 ## 📌 Overview
-This project is a comprehensive implementation of fundamental 2D Computer Graphics algorithms using **C++** and **OpenGL (FreeGLUT)**. It provides an interactive GUI to draw, transform, clip, and compare various algorithms manually implemented from scratch (no high-level OpenGL drawing functions used for core algorithms).
+This project is a high-performance, comprehensive implementation of fundamental 2D Computer Graphics algorithms using **C++** and **OpenGL (FreeGLUT)**. Designed as an academic benchmark tool, it provides an interactive GUI to draw, transform, clip, and analyze various algorithms manually implemented from scratch.
 
 ---
 
 ## 🛠️ Prerequisites & Setup
 
-To run this project, you need to have the following installed:
+To run this project, ensure you have the following environment:
 
-### 1. Requirements
-*   **IDE**: CLion (Recommended) or Visual Studio Code.
-*   **Compiler**: MinGW-w64 (GCC 13.1+) or any C++17 compatible compiler.
+### 1. System Requirements
+*   **IDE**: CLion 2024/2025 (Highly Recommended).
+*   **Compiler**: MinGW-w64 (GCC 13.1+).
 *   **Build System**: CMake 3.20+.
-*   **Graphics Library**: FreeGLUT (included in the `external` folder/CMake config).
+*   **Libraries**: OpenGL, FreeGLUT (Handled via CMake).
 
-### 2. How to Run (CLion)
-1.  **Open Project**: Launch CLion and open the project folder.
-2.  **Configure CMake**: The project uses a `CMakeLists.txt` file. CLion will automatically detect it. 
-3.  **Reload CMake**: If prompted, click "Reload CMake Project".
-4.  **Build & Run**: Click the **Run** button (Green Arrow) in the top right.
-    *   *Note: The DLLs are automatically copied to the output directory during the build process.*
-
-### 3. Manual Build (Command Line)
-If you prefer the command line:
-```bash
-mkdir build && cd build
-cmake ..
-cmake --build .
-./GraphicsAlgorithms
-```
+### 2. Installation & Running (CLion)
+1.  **Clone/Open**: Open the project folder in CLion.
+2.  **CMake Setup**: CLion will automatically parse `CMakeLists.txt`.
+3.  **Reload Project**: If prompted, click "Reload CMake Project".
+4.  **Run**: Press the **Run** button.
+    *   *Note: All necessary DLLs and resources are managed automatically by the build script.*
 
 ---
 
-## 🚀 Implemented Algorithms
+## 🚀 Advanced Features (V2.2)
 
-### 1. Line Drawing
-*   **DDA (Digital Differential Analyzer)**: Incremental algorithm using floating-point math.
-*   **Bresenham's Line Algorithm**: High-performance integer-only algorithm.
+### 1. Scientific Benchmarking Charts
+*   **Real-time Analysis**: Toggle **Compare & Charts** to see a dedicated side-panel with bar graphs.
+*   **Performance Metrics**: Compares execution time (μs) for similar algorithms (e.g., Bresenham vs Midpoint).
+*   **Visual Proof**: Provides empirical evidence of algorithm efficiency directly in the UI.
 
-### 2. Circle Drawing
-*   **Midpoint Circle Algorithm**: Uses 8-way symmetry and decision parameters.
-*   **Bresenham's Circle Algorithm**: Optimized error-minimization approach.
+### 2. Mathematical Equation Visualization
+*   **Live Equations**: Toggle **Show Equations** to see the math behind every shape on the canvas.
+*   **Dynamic Updating**: Equations update in real-time as you translate, rotate, or scale shapes.
 
-### 3. 2D Transformations
-*   **Translation**: Moving shapes by (dx, dy).
-*   **Rotation**: Rotating shapes around a pivot point.
-*   **Scaling**: Uniform scaling relative to a pivot point.
-*   **Reflection**: Flip shapes across X-axis, Y-axis, or Origin.
-*   **Shearing**: Slanting shapes horizontally/vertically.
+### 3. Smooth Animation System
+*   **Transitions**: Transformations (Scaling/Rotation) are now interpolated over time for a smooth, high-end feel.
+*   **Interactive Control**: Use the **Animate (R)** button to trigger dynamic motion transitions.
 
-### 4. Clipping
-*   **Cohen-Sutherland (Line)**: Region-code based clipping for line segments.
-*   **Sutherland-Hodgman (Polygon)**: Successive edge clipping for closed polygons.
-
-### 5. Curves
-*   **Cubic Bezier Curves**: Smooth curves using 4 control points (Bernstein basis).
-*   **Cubic B-Splines**: Local control curves using 4 control points.
+### 4. Smart Persistence (Versioned Saves)
+*   **Timestamped Files**: Every "Save Scene" creates a unique file (e.g., `scene_20260512_0100.txt`) to prevent overwriting your work.
+*   **Console Loading**: Load specific scenes by entering the filename in the console.
 
 ---
 
-## 🎮 How to Use the App
+## 🏛️ Implemented Core Algorithms
 
-*   **Drawing Shapes**: Click a tool (e.g., DDA Line), then click twice on the grid.
-*   **Bezier/B-Spline**: Click 4 times on the grid to define control points.
-*   **Polygons**: Click multiple times (Left Click) to add vertices, and **Right Click** to close the polygon.
-*   **Clipping**:
-    1.  Draw a **Clip Window** over your shapes.
-    2.  Click **S-H Clip** to clip polygons.
-    3.  Lines are clipped automatically when the window is drawn.
-*   **Persistence**:
-    *   **Save Scene**: Saves current state to `scene.txt`.
-    *   **Load Scene**: Restores scene (Auto-loads on startup).
-*   **Comparison**: Use **Compare (Split Screen)** to view performance metrics side-by-side.
+| Category | Algorithms |
+| :--- | :--- |
+| **Line Drawing** | DDA, Bresenham's (Integer-based) |
+| **Circle Drawing** | Midpoint Circle, Bresenham's Circle |
+| **Curves** | Cubic Bezier, Cubic B-Splines |
+| **Transformations** | Translation, Rotation, Scaling, Reflection (X/Y/O), Shearing |
+| **Clipping** | Cohen-Sutherland (Lines), Sutherland-Hodgman (Polygons) |
 
 ---
 
-## 🏆 Bonus Features (Fully Implemented)
-*   [x] **Real-time Performance Stats**: Shows pixel count and execution time (μs).
-*   [x] **Undo/Redo System**: Full support for all shape types (Keys: Z/Y).
-*   [x] **Interactive Animation**: Rotate all objects in the scene dynamically (Key: R).
-*   [x] **Save/Load System**: Full serialization of the drawing scene.
-*   [x] **Sutherland-Hodgman Polygon Clipping**: Advanced clipping for closed shapes.
-*   [x] **Modern Dark UI**: Intuitive sidebar with hover effects.
+## 📝 Documentation & Reports
+For detailed technical breakdowns and comparative studies (in Arabic), refer to:
+*   [**Technical Explanation (AR)**](file:///e:/graphicsproject/Algorithms_Explanation_AR.md) - How every algorithm works mathematically.
+*   [**Comparative Analysis (AR)**](file:///e:/graphicsproject/Algorithms_Comparison_AR.md) - Detailed differences between similar algorithms.
 
 ---
 
-## 📝 Documentation
-For a detailed technical explanation of each algorithm in Arabic, please refer to:
-*   [Algorithms Explanation (Arabic)](file:///e:/graphicsproject/Algorithms_Explanation_AR.md)
-*   [Algorithms Comparison (Arabic)](file:///e:/graphicsproject/Algorithms_Comparison_AR.md)
+## 🎮 UI Controls Guide
+*   **Left Click**: Place points / Draw shapes.
+*   **Right Click**: (Contextual) Close polygon / Reset.
+*   **Keys**: 
+    *   `Z`: Undo last action.
+    *   `R`: Toggle Global Animation.
+    *   `Esc`: Exit Application.
 
 ---
 **Developed for the Computer Graphics Final Project. © 2026**

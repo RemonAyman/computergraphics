@@ -3,29 +3,27 @@
 #include <iostream>
 #include <sstream>
 
-void Storage::save(const std::string& filename, const std::vector<std::unique_ptr<Shape>>& shapes) {
+void SceneStorage::saveShapes(const std::vector<std::unique_ptr<Shape>>& shapes, const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open " << filename << " for saving!" << std::endl;
         return;
     }
-    std::cout << "Saving " << shapes.size() << " shapes to " << filename << "..." << std::endl;
     for (const auto& s : shapes) {
         file << s->serialize() << "\n";
     }
     file.close();
-    std::cout << "Save successful!" << std::endl;
+    std::cout << "Scene saved to: " << filename << std::endl;
 }
 
-void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shape>>& shapes) {
+std::vector<std::unique_ptr<Shape>> SceneStorage::loadShapes(const std::string& filename) {
+    std::vector<std::unique_ptr<Shape>> shapes;
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open " << filename << " for loading!" << std::endl;
-        return;
+        return shapes;
     }
-    shapes.clear();
     std::string line;
-    int count = 0;
     while (std::getline(file, line)) {
         if (line.empty()) continue;
         std::stringstream ss(line);
@@ -73,8 +71,8 @@ void Storage::load(const std::string& filename, std::vector<std::unique_ptr<Shap
             ss >> r >> g >> b;
             shapes.push_back(std::make_unique<PolygonShape>(verts, Color(r, g, b)));
         }
-        count++;
     }
     file.close();
-    std::cout << "Loaded " << count << " shapes from " << filename << std::endl;
+    std::cout << "Loaded " << shapes.size() << " shapes from " << filename << std::endl;
+    return shapes;
 }

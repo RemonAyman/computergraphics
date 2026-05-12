@@ -3,6 +3,9 @@
 
 #include "Common.h"
 #include <vector>
+#include <string>
+#include <algorithm>
+#include <utility>
 
 class Shape {
 public:
@@ -12,6 +15,9 @@ public:
   virtual ~Shape() = default;
 
   virtual void draw() = 0;
+  virtual void drawClipped(int xmin, int ymin, int xmax, int ymax) = 0;
+  virtual std::string getEquation() const = 0;
+
   virtual void translate(int dx, int dy) = 0;
   virtual void rotate(float angle, Point pivot) = 0;
   virtual void scale(float sx, float sy, Point pivot) = 0;
@@ -36,6 +42,8 @@ public:
       : Shape(Type::LINE, color), p1(p1), p2(p2), algo(algo) {}
 
   void draw() override;
+  void drawClipped(int xmin, int ymin, int xmax, int ymax) override;
+  std::string getEquation() const override;
   void translate(int dx, int dy) override;
   void rotate(float angle, Point pivot) override;
   void scale(float sx, float sy, Point pivot) override;
@@ -51,10 +59,11 @@ public:
   std::string algo;
 
   CircleShape(Point center, int radius, Color color, std::string algo)
-      : Shape(Type::CIRCLE, color), center(center), radius(radius), algo(algo) {
-  }
+      : Shape(Type::CIRCLE, color), center(center), radius(radius), algo(algo) {}
 
   void draw() override;
+  void drawClipped(int xmin, int ymin, int xmax, int ymax) override;
+  std::string getEquation() const override;
   void translate(int dx, int dy) override;
   void rotate(float angle, Point pivot) override;
   void scale(float sx, float sy, Point pivot) override;
@@ -68,11 +77,12 @@ public:
   std::vector<Point> controlPoints;
   std::string algo;
 
-  BezierShape(const std::vector<Point> &pts, Color color,
-              std::string algo = "Bezier")
+  BezierShape(const std::vector<Point> &pts, Color color, std::string algo = "Bezier")
       : Shape(Type::CURVE, color), controlPoints(pts), algo(algo) {}
 
   void draw() override;
+  void drawClipped(int xmin, int ymin, int xmax, int ymax) override;
+  std::string getEquation() const override;
   void translate(int dx, int dy) override;
   void rotate(float angle, Point pivot) override;
   void scale(float sx, float sy, Point pivot) override;
@@ -89,6 +99,8 @@ public:
       : Shape(Type::POLYGON, color), vertices(v) {}
 
   void draw() override;
+  void drawClipped(int xmin, int ymin, int xmax, int ymax) override;
+  std::string getEquation() const override;
   void translate(int dx, int dy) override;
   void rotate(float angle, Point pivot) override;
   void scale(float sx, float sy, Point pivot) override;
@@ -103,16 +115,16 @@ public:
 
   ClippingRect(Point p1, Point p2, Color color)
       : Shape(Type::CLIP_RECT, color), pMin(p1), pMax(p2) {
-    if (pMin.x > pMax.x)
-      std::swap(pMin.x, pMax.x);
-    if (pMin.y > pMax.y)
-      std::swap(pMin.y, pMax.y);
+    if (pMin.x > pMax.x) std::swap(pMin.x, pMax.x);
+    if (pMin.y > pMax.y) std::swap(pMin.y, pMax.y);
   }
 
   void draw() override;
+  void drawClipped(int xmin, int ymin, int xmax, int ymax) override {}
+  std::string getEquation() const override { return "Window Rect"; }
   void translate(int dx, int dy) override;
-  void rotate(float angle, Point pivot) override;
-  void scale(float sx, float sy, Point pivot) override;
+  void rotate(float angle, Point pivot) override {}
+  void scale(float sx, float sy, Point pivot) override {}
   void reflect(std::string axis) override {}
   void shear(float shx, float shy) override {}
   std::string serialize() const override;

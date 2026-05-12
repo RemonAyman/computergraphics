@@ -1,14 +1,16 @@
-#ifndef STORAGE_H
-#define STORAGE_H
+#ifndef GRAPHICS_SCENE_STORAGE_H
+#define GRAPHICS_SCENE_STORAGE_H
 
-#include "App.h"
+#include "Shape.h"
 #include <fstream>
 #include <vector>
+#include <memory>
+#include <string>
 
-class Storage {
+class SceneStorage {
 public:
-    static void save(const std::string& filename, const std::vector<std::unique_ptr<Shape>>& shapes);
-    static void load(const std::string& filename, std::vector<std::unique_ptr<Shape>>& shapes);
+    static void saveShapes(const std::vector<std::unique_ptr<Shape>>& shapes, const std::string& filename);
+    static std::vector<std::unique_ptr<Shape>> loadShapes(const std::string& filename);
 };
 
 #endif

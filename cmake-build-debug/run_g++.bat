@@ -1,0 +1,1 @@
+"E:\Program Files\CLion 2025.3.2\bin\mingw\bin\g++.exe" -IE:/graphicsproject/src -std=gnu++17 -MD -MT CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj -MF CMakeFiles\GraphicsAlgorithms.dir\src\App.cpp.obj.d -o CMakeFiles\GraphicsAlgorithms.dir\src\App.cpp.obj -c E:/graphicsproject/src/App.cpp > E:\graphicsproject\err2.txt 2>&1

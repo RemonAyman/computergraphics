@@ -25,7 +25,7 @@ set(CMAKE_C_COMPILER_ARCHITECTURE_ID "x86_64")
 
 set(CMAKE_AR "E:/Program Files/CLion 2025.3.2/bin/mingw/bin/ar.exe")
 set(CMAKE_C_COMPILER_AR "E:/Program Files/CLion 2025.3.2/bin/mingw/bin/gcc-ar.exe")
-set(CMAKE_RANLIB "E:/Program Files/CLion 2025.3.2/bin/mingw/bin/ranlib.exe")
+set(CMAKE_RANLIB ":")
 set(CMAKE_C_COMPILER_RANLIB "E:/Program Files/CLion 2025.3.2/bin/mingw/bin/gcc-ranlib.exe")
 set(CMAKE_LINKER "E:/Program Files/CLion 2025.3.2/bin/mingw/bin/ld.exe")
 set(CMAKE_LINKER_LINK "")

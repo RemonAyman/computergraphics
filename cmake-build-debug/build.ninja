@@ -52,7 +52,7 @@ build cmake_object_order_depends_target_GraphicsAlgorithms: phony || cmake_objec
 build CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/App.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\App.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -60,7 +60,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj: CXX_COMPILER__GraphicsA
 build CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/Clipping.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\Clipping.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -68,7 +68,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj: CXX_COMPILER__Grap
 build CMakeFiles/GraphicsAlgorithms.dir/src/Curves.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/Curves.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\Curves.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -76,7 +76,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/Curves.cpp.obj: CXX_COMPILER__Graphi
 build CMakeFiles/GraphicsAlgorithms.dir/src/DrawingAlgorithms.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/DrawingAlgorithms.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\DrawingAlgorithms.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -84,7 +84,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/DrawingAlgorithms.cpp.obj: CXX_COMPI
 build CMakeFiles/GraphicsAlgorithms.dir/src/Shape.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/Shape.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\Shape.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -92,7 +92,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/Shape.cpp.obj: CXX_COMPILER__Graphic
 build CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/Storage.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\Storage.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -100,7 +100,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj: CXX_COMPILER__Graph
 build CMakeFiles/GraphicsAlgorithms.dir/src/Transformations.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/Transformations.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\Transformations.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -108,7 +108,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/Transformations.cpp.obj: CXX_COMPILE
 build CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj: CXX_COMPILER__GraphicsAlgorithms_unscanned_Debug E$:/graphicsproject/src/main.cpp || cmake_object_order_depends_target_GraphicsAlgorithms
   CONFIG = Debug
   DEP_FILE = CMakeFiles\GraphicsAlgorithms.dir\src\main.cpp.obj.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -IE:/graphicsproject/src
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   OBJECT_FILE_DIR = CMakeFiles\GraphicsAlgorithms.dir\src
@@ -123,8 +123,7 @@ build CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj: CXX_COMPILER__Graphics
 
 build GraphicsAlgorithms.exe: CXX_EXECUTABLE_LINKER__GraphicsAlgorithms_Debug CMakeFiles/GraphicsAlgorithms.dir/src/App.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/Clipping.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/Curves.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/DrawingAlgorithms.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/Shape.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/Storage.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/Transformations.cpp.obj CMakeFiles/GraphicsAlgorithms.dir/src/main.cpp.obj | _deps/freeglut-build/lib/libfreeglut.dll.a || _deps/freeglut-build/bin/libfreeglut.dll
   CONFIG = Debug
-  FLAGS = -g
-  LINK_LIBRARIES = -lopengl32  -lglu32  _deps/freeglut-build/lib/libfreeglut.dll.a  -lopengl32  -lopengl32  -lwinmm  -lgdi32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = -lopengl32  -lglu32  _deps/freeglut-build/lib/libfreeglut.dll.a  -lcomdlg32  -lopengl32  -lopengl32  -lwinmm  -lgdi32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\GraphicsAlgorithms.dir
   POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D E:\graphicsproject\cmake-build-debug && "E:\Program Files\CLion 2025.3.2\bin\cmake\win\x64\bin\cmake.exe" -E copy_if_different E:/graphicsproject/cmake-build-debug/_deps/freeglut-build/bin/libfreeglut.dll E:/graphicsproject/cmake-build-debug"
   PRE_LINK = cd .

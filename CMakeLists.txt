@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 project(GraphicsAlgorithms)
@@ -20,11 +20,12 @@ FetchContent_MakeAvailable(freeglut)
 find_package(OpenGL REQUIRED)
 
 file(GLOB SOURCES "src/*.cpp")
+list(FILTER SOURCES EXCLUDE REGEX "test_storage\\.cpp$")
 file(GLOB HEADERS "src/*.h")
 
 add_executable(GraphicsAlgorithms ${SOURCES} ${HEADERS})
 
-target_link_libraries(GraphicsAlgorithms PRIVATE OpenGL::GL OpenGL::GLU freeglut)
+target_link_libraries(GraphicsAlgorithms PRIVATE OpenGL::GL OpenGL::GLU freeglut comdlg32)
 target_include_directories(GraphicsAlgorithms PRIVATE src)
 
 # Copy DLL to executable directory

@@ -32,13 +32,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 25,
+				"line" : 26,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 27,
+				"line" : 28,
 				"parent" : 0
 			},
 			{
@@ -53,13 +53,13 @@
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 31,
+				"line" : 32,
 				"parent" : 0
 			},
 			{
 				"command" : 4,
 				"file" : 0,
-				"line" : 28,
+				"line" : 29,
 				"parent" : 0
 			}
 		]
@@ -70,7 +70,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++17 -fdiagnostics-color=always"
+					"fragment" : "-std=gnu++17 -fdiagnostics-color=always"
 				}
 			],
 			"includes" : 
@@ -115,10 +115,6 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
-			{
 				"backtrace" : 2,
 				"fragment" : "-lopengl32",
 				"role" : "libraries"
@@ -131,6 +127,11 @@
 			{
 				"backtrace" : 2,
 				"fragment" : "_deps\\freeglut-build\\lib\\libfreeglut.dll.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-lcomdlg32",
 				"role" : "libraries"
 			},
 			{

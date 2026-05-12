@@ -23,6 +23,7 @@ public:
   static void mouseCallback(int button, int state, int x, int y);
   static void passiveMouseCallback(int x, int y);
   static void timerCallback(int value);
+  static void menuCallback(int id);
 
 private:
   App();
@@ -50,6 +51,8 @@ private:
   float animScale;
   Point animPivot;
   int animFramesLeft;
+  int sidebarScrollY = 0;
+  int windowId = 0;
 
   std::vector<Point> inputPoints;
   std::vector<std::unique_ptr<Shape>> shapes;
@@ -59,7 +62,9 @@ private:
 
   // UI Helpers
   void initButtons();
+  void initMenus();
   void handleButtonClick(Button &btn);
+  void createDemoShape();
 
   // Features
   void undo();

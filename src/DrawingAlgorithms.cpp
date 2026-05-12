@@ -22,6 +22,8 @@ void DrawingAlgorithms::drawLineDDA(int x1, int y1, int x2, int y2, Color color)
     int dy = y2 - y1;
     int steps = std::max(std::abs(dx), std::abs(dy));
 
+    if (steps == 0) { putPixel(x1, y1, color); return; }
+
     float xInc = dx / (float)steps;
     float yInc = dy / (float)steps;
 
