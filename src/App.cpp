@@ -419,6 +419,14 @@ void App::loadScene() {
     if (!loaded.empty()) {
       shapes = std::move(loaded);
       if (activeClipWindow) { delete activeClipWindow; activeClipWindow = nullptr; }
+      // Scan for a ClippingRect to reactivate it
+      for (auto &s : shapes) {
+        if (s->getType() == Shape::Type::CLIP_RECT) {
+          ClippingRect* cr = static_cast<ClippingRect*>(s.get());
+          activeClipWindow = new ClippingRect(cr->pMin, cr->pMax, cr->getColor());
+          break;
+        }
+      }
     }
   }
   if (windowId) glutSetWindow(windowId);
