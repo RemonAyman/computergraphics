@@ -337,9 +337,7 @@ void App::handleButtonClick(Button &btn) {
     loadScene();
   else if (btn.label == "Clear All") {
     shapes.clear();
-    if (activeClipWindow)
-      delete activeClipWindow;
-    activeClipWindow = nullptr;
+    activeClipWindow.reset();
   } else if (btn.label == "Reflect X") {
     for (auto &s : shapes)
       s->reflect("X");
@@ -418,12 +416,12 @@ void App::loadScene() {
     auto loaded = SceneStorage::loadShapes(filename);
     if (!loaded.empty()) {
       shapes = std::move(loaded);
-      if (activeClipWindow) { delete activeClipWindow; activeClipWindow = nullptr; }
+      if (activeClipWindow) activeClipWindow.reset();
       // Scan for a ClippingRect to reactivate it
       for (auto &s : shapes) {
         if (s->getType() == Shape::Type::CLIP_RECT) {
           ClippingRect* cr = static_cast<ClippingRect*>(s.get());
-          activeClipWindow = new ClippingRect(cr->pMin, cr->pMax, cr->getColor());
+          activeClipWindow = std::make_unique<ClippingRect>(cr->pMin, cr->pMax, cr->getColor());
           break;
         }
       }
@@ -514,9 +512,7 @@ void App::mouseCallback(int button, int state, int x, int y) {
         created = true;
       } else if ((app.currentMode == AppMode::CLIPPING_LINE || app.currentMode == AppMode::CLIPPING_POLYGON) &&
                  app.inputPoints.size() == 2) {
-        if (app.activeClipWindow)
-          delete app.activeClipWindow;
-        app.activeClipWindow = new ClippingRect(
+        app.activeClipWindow = std::make_unique<ClippingRect>(
             app.inputPoints[0], app.inputPoints[1], APP_COLOR_WHITE);
         app.inputPoints.clear();
         app.isDrawing = false;

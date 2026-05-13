@@ -58,7 +58,7 @@ private:
   std::vector<std::unique_ptr<Shape>> shapes;
   std::vector<std::unique_ptr<Shape>> redoStack;
   std::vector<Button> buttons;
-  ClippingRect *activeClipWindow = nullptr;
+  std::unique_ptr<ClippingRect> activeClipWindow;
 
   // UI Helpers
   void initButtons();
