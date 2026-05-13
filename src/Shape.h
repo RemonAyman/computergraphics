@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <utility>
+#include <memory>
 
 class Shape {
 public:
@@ -24,6 +25,7 @@ public:
   virtual void reflect(std::string axis) = 0;
   virtual void shear(float shx, float shy) = 0;
   virtual std::string serialize() const = 0;
+  virtual std::unique_ptr<Shape> clone() const = 0;
 
   Type getType() const { return type; }
   Color getColor() const { return color; }
@@ -50,6 +52,7 @@ public:
   void reflect(std::string axis) override;
   void shear(float shx, float shy) override;
   std::string serialize() const override;
+  std::unique_ptr<Shape> clone() const override { return std::make_unique<LineShape>(*this); }
 };
 
 class CircleShape : public Shape {
@@ -70,6 +73,7 @@ public:
   void reflect(std::string axis) override;
   void shear(float shx, float shy) override;
   std::string serialize() const override;
+  std::unique_ptr<Shape> clone() const override { return std::make_unique<CircleShape>(*this); }
 };
 
 class BezierShape : public Shape {
@@ -89,6 +93,7 @@ public:
   void reflect(std::string axis) override;
   void shear(float shx, float shy) override;
   std::string serialize() const override;
+  std::unique_ptr<Shape> clone() const override { return std::make_unique<BezierShape>(*this); }
 };
 
 class PolygonShape : public Shape {
@@ -107,6 +112,7 @@ public:
   void reflect(std::string axis) override;
   void shear(float shx, float shy) override;
   std::string serialize() const override;
+  std::unique_ptr<Shape> clone() const override { return std::make_unique<PolygonShape>(*this); }
 };
 
 class ClippingRect : public Shape {
@@ -128,6 +134,7 @@ public:
   void reflect(std::string axis) override {}
   void shear(float shx, float shy) override {}
   std::string serialize() const override;
+  std::unique_ptr<Shape> clone() const override { return std::make_unique<ClippingRect>(*this); }
 };
 
 #endif

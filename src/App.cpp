@@ -81,6 +81,16 @@ void App::render() {
       else
         shape->draw();
     }
+
+    // Render Ghost Shapes (Simultaneous Display)
+    if (!ghostShapes.empty()) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(0.5f, 0.5f, 0.5f, 0.4f); // Faint gray
+        for (auto &gs : ghostShapes) gs->draw();
+        glDisable(GL_BLEND);
+    }
+
     if (activeClipWindow)
       activeClipWindow->draw();
   }
@@ -337,19 +347,26 @@ void App::handleButtonClick(Button &btn) {
     loadScene();
   else if (btn.label == "Clear All") {
     shapes.clear();
+    ghostShapes.clear();
     activeClipWindow.reset();
   } else if (btn.label == "Reflect X") {
-    for (auto &s : shapes)
+    ghostShapes.clear();
+    for (auto &s : shapes) {
+      ghostShapes.push_back(s->clone());
       s->reflect("X");
+    }
   } else if (btn.label == "Reflect Y") {
-    for (auto &s : shapes)
+    ghostShapes.clear();
+    for (auto &s : shapes) {
+      ghostShapes.push_back(s->clone());
       s->reflect("Y");
+    }
   } else if (btn.mode != AppMode::NONE) {
     currentMode = btn.mode;
     inputPoints.clear();
     isDrawing = false;
   }
-  glutPostRedisplay();
+  if (glutGetWindow() != 0) glutPostRedisplay();
 }
 
 void App::toggleSplitScreen() {
@@ -393,7 +410,7 @@ void App::saveScene() {
   if (GetSaveFileNameA(&ofn)) {
     SceneStorage::saveShapes(shapes, filename);
   }
-  if (windowId) glutSetWindow(windowId);
+  // if (windowId) glutSetWindow(windowId); // Removed to avoid "not found" error after modal dialogs
 #else
   auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
   std::stringstream ss;
@@ -427,7 +444,7 @@ void App::loadScene() {
       }
     }
   }
-  if (windowId) glutSetWindow(windowId);
+  // if (windowId) glutSetWindow(windowId); // Removed for stability
 #else
   std::string filename;
   std::cout << "Enter filename: "; std::cin >> filename;
@@ -452,14 +469,14 @@ void App::mouseCallback(int button, int state, int x, int y) {
       app.sidebarScrollY += 20;
       if (app.sidebarScrollY > 0)
         app.sidebarScrollY = 0;
-      glutPostRedisplay();
+      if (glutGetWindow() != 0) glutPostRedisplay();
       return;
     }
     if (button == 4) {
       app.sidebarScrollY -= 20;
       if (app.sidebarScrollY < -500)
         app.sidebarScrollY = -500;
-      glutPostRedisplay();
+      if (glutGetWindow() != 0) glutPostRedisplay();
       return;
     }
   }
@@ -517,37 +534,55 @@ void App::mouseCallback(int button, int state, int x, int y) {
         app.inputPoints.clear();
         app.isDrawing = false;
       } else if (app.currentMode == AppMode::TRANSFORM_TRANSLATE) {
+        app.ghostShapes.clear();
+        for (auto &s : app.shapes) app.ghostShapes.push_back(s->clone());
         int dx = x - WINDOW_WIDTH / 2;
         int dy = y - WINDOW_HEIGHT / 2;
         for (auto &s : app.shapes) s->translate(dx, dy);
         app.inputPoints.clear();
         app.isDrawing = false;
       } else if (app.currentMode == AppMode::TRANSFORM_ROTATE) {
+        app.ghostShapes.clear();
+        for (auto &s : app.shapes) app.ghostShapes.push_back(s->clone());
         Point pivot = {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
         for (auto &s : app.shapes) s->rotate(15.0f, pivot);
         app.inputPoints.clear();
         app.isDrawing = false;
       } else if (app.currentMode == AppMode::TRANSFORM_SCALE) {
+        app.ghostShapes.clear();
+        for (auto &s : app.shapes) app.ghostShapes.push_back(s->clone());
         Point pivot = {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
         for (auto &s : app.shapes) s->scale(1.1f, 1.1f, pivot);
         app.inputPoints.clear();
         app.isDrawing = false;
       } else if (app.currentMode == AppMode::TRANSFORM_SHEAR) {
+        app.ghostShapes.clear();
+        for (auto &s : app.shapes) app.ghostShapes.push_back(s->clone());
         for (auto &s : app.shapes) s->shear(0.1f, 0.0f);
         app.inputPoints.clear();
         app.isDrawing = false;
-      } else if (app.currentMode == AppMode::DRAW_POLYGON && app.inputPoints.size() == 4) {
-        app.shapes.push_back(std::make_unique<PolygonShape>(
-            app.inputPoints, APP_COLOR_ACCENT));
-        created = true;
+      } else if (app.currentMode == AppMode::DRAW_POLYGON) {
+          // Handled by Right Click to finish, or just collecting points here
+          app.isDrawing = true;
       }
       if (created) {
+        app.ghostShapes.clear();
         app.inputPoints.clear();
         app.isDrawing = false;
       }
     }
   }
-  glutPostRedisplay();
+
+  // Right click to finish Polygon
+  if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+      if (app.currentMode == AppMode::DRAW_POLYGON && app.inputPoints.size() >= 3) {
+          app.shapes.push_back(std::make_unique<PolygonShape>(app.inputPoints, APP_COLOR_ACCENT));
+          app.ghostShapes.clear();
+          app.inputPoints.clear();
+          app.isDrawing = false;
+      }
+  }
+  if (glutGetWindow() != 0) glutPostRedisplay();
 }
 
 void App::displayCallback() { getInstance().render(); }
@@ -568,7 +603,7 @@ void App::keyboardCallback(unsigned char key, int x, int y) {
     else if (app.showEquations) { app.showEquations = false; }
     else exit(0);
   }
-  glutPostRedisplay();
+  if (glutGetWindow() != 0) glutPostRedisplay();
 }
 void App::passiveMouseCallback(int x, int y) {
   App &app = getInstance();
@@ -578,7 +613,7 @@ void App::passiveMouseCallback(int x, int y) {
     btn.isHovered =
         (x >= btn.x && x <= btn.x + btn.w && y >= realY && y <= realY + btn.h);
   }
-  glutPostRedisplay();
+  if (glutGetWindow() != 0) glutPostRedisplay();
 }
 void App::drawText(int x, int y, std::string text, void *font) {
   glRasterPos2i(x, y);

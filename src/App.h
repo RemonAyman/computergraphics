@@ -56,6 +56,7 @@ private:
 
   std::vector<Point> inputPoints;
   std::vector<std::unique_ptr<Shape>> shapes;
+  std::vector<std::unique_ptr<Shape>> ghostShapes;
   std::vector<std::unique_ptr<Shape>> redoStack;
   std::vector<Button> buttons;
   std::unique_ptr<ClippingRect> activeClipWindow;
